@@ -1,22 +1,24 @@
 package src.divideAndConquerSortingSearching;
 
-public class MergeSort {
+public class InversionCount {
 
-    public static void sort(int[] array, int low, int high) {
+    public static int countAndSort(int[] array, int low, int high) {
         int mid;
+        int inversion_count = 0;
         if(low < high) {
             mid = (low + high) / 2;
-            sort(array, low, mid);
-            sort(array, mid+1, high);
-            merge(array, low, high);
+            inversion_count += countAndSort(array, low, mid);
+            inversion_count += countAndSort(array, mid+1, high);
+            inversion_count += countAndMerge(array, low, high);
         }
+        return inversion_count;
     }
 
-    public static void merge(int[] array, int low, int high) {
+    public static int countAndMerge(int[] array, int low, int high) {
 
         int temp[] = new int[high-low+1];
         int mid = (low + high) / 2;
-        int i,j,k;
+        int i,j,k,count = 0;
         i = low;
         j = mid + 1;
         k = 0;
@@ -27,6 +29,7 @@ public class MergeSort {
             }
             else {
                 temp[k++] = array[j++];
+                count += mid - i + 1;
             }
         }
 
@@ -44,17 +47,14 @@ public class MergeSort {
             array[i] = temp[k++];
         }
 
+        return count;
     }
 
     public static void main(String[] args) {
 
         int[] array = {6,5,7,8,4,3,2,9,0,1};
 
-        sort(array, 0, array.length - 1);
-
-        for(int i=0; i< array.length; i++) {
-            System.out.print(array[i] + " ");
-        }
+        System.out.println("Inversion Count: " + countAndSort(array, 0, array.length - 1));
 
     }
 }
