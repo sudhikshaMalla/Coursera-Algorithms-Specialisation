@@ -2,7 +2,6 @@ package src.divideAndConquerSortingSearching;
 
 public class StrassenMatrixMultiplication {
 
-
     public static int[][] multiplyMatrix(int[][] A, int[][] B, int n) {
 
         if(n==2) {
@@ -24,63 +23,52 @@ public class StrassenMatrixMultiplication {
         else {
 
             int mid = n/2;
-            int[][] q1 = addMatrix(multiplyMatrix(getFirstQuadrant(A),getFirstQuadrant(B),mid),multiplyMatrix(getSecondQuadrant(A),getThirdQuadrant(B),mid),mid);
-            int[][] q2 = addMatrix(multiplyMatrix(getFirstQuadrant(A),getSecondQuadrant(B),mid),multiplyMatrix(getSecondQuadrant(A),getFourthQuadrant(B),mid),mid);
-            int[][] q3 = addMatrix(multiplyMatrix(getThirdQuadrant(A),getFirstQuadrant(B),mid),multiplyMatrix(getFourthQuadrant(A),getThirdQuadrant(B),mid),mid);
-            int[][] q4 = addMatrix(multiplyMatrix(getThirdQuadrant(A),getSecondQuadrant(B),mid),multiplyMatrix(getFourthQuadrant(A),getFourthQuadrant(B),mid),mid);
+            int[][] q1 = addMatrix(multiplyMatrix(getFirstQuadrant(A,n),getFirstQuadrant(B,n),mid),multiplyMatrix(getSecondQuadrant(A,n),getThirdQuadrant(B,n),mid),mid);
+            int[][] q2 = addMatrix(multiplyMatrix(getFirstQuadrant(A,n),getSecondQuadrant(B,n),mid),multiplyMatrix(getSecondQuadrant(A,n),getFourthQuadrant(B,n),mid),mid);
+            int[][] q3 = addMatrix(multiplyMatrix(getThirdQuadrant(A,n),getFirstQuadrant(B,n),mid),multiplyMatrix(getFourthQuadrant(A,n),getThirdQuadrant(B,n),mid),mid);
+            int[][] q4 = addMatrix(multiplyMatrix(getThirdQuadrant(A,n),getSecondQuadrant(B,n),mid),multiplyMatrix(getFourthQuadrant(A,n),getFourthQuadrant(B,n),mid),mid);
 
-            return combineQuadrants(q1,q2,q3,q4);
+            return combineQuadrants(q1,q2,q3,q4,n);
         }
     }
 
+    public static int[][] combineQuadrants(int[][] q1, int[][] q2, int[][] q3, int[][] q4, int array_length) {
+        int quadrant_length = array_length/2;
+        int[][] C = new int[array_length][array_length];
 
-
-    public static int[][] combineQuadrants(int[][] q1, int[][] q2, int[][] q3, int[][] q4) {
-
-        int[][] C = new int[4][4];
-
-        for(int i=0;i<2;i++) {
-            for(int j=0;j<2;j++) {
+        for(int i=0;i<quadrant_length;i++) {
+            for(int j=0;j<quadrant_length;j++) {
 
                 C[i][j] = q1[i][j];
             }
         }
 
+        for(int i=0;i<quadrant_length;i++) {
 
+            for(int j=0;j<quadrant_length;j++) {
 
-        for(int i=0;i<2;i++) {
-
-            for(int j=0;j<2;j++) {
-
-                C[i][j+2] = q2[i][j];
+                C[i][j+quadrant_length] = q2[i][j];
             }
         }
 
+        for(int i=0;i<quadrant_length;i++) {
 
+            for(int j=0;j<quadrant_length;j++) {
 
-        for(int i=0;i<2;i++) {
-
-            for(int j=0;j<2;j++) {
-
-                C[i+2][j] = q3[i][j];
+                C[i+quadrant_length][j] = q3[i][j];
             }
         }
 
+        for(int i=0;i<quadrant_length;i++) {
 
+            for(int j=0;j<quadrant_length;j++) {
 
-        for(int i=0;i<2;i++) {
-
-            for(int j=0;j<2;j++) {
-
-                C[i+2][j+2] = q4[i][j];
+                C[i+quadrant_length][j+quadrant_length] = q4[i][j];
             }
         }
-
-
 
         return C;
     }
-
 
     public static int[][] addMatrix(int[][] A, int[][] B, int n) {
 
@@ -95,12 +83,11 @@ public class StrassenMatrixMultiplication {
         return C;
     }
 
-
-    public static int[][] getFirstQuadrant(int[][] A) {
-
-        int[][] C = new int[2][2];
-        for(int i=0;i<2;i++) {
-            for(int j=0;j<2;j++) {
+    public static int[][] getFirstQuadrant(int[][] A, int array_length) {
+        int quadrant_length = array_length/2;
+        int[][] C = new int[quadrant_length][quadrant_length];
+        for(int i=0;i<quadrant_length;i++) {
+            for(int j=0;j<quadrant_length;j++) {
 
                 C[i][j] = A[i][j];
             }
@@ -109,51 +96,44 @@ public class StrassenMatrixMultiplication {
         return C;
     }
 
-
-    public static int[][] getSecondQuadrant(int[][] A) {
-
-        int[][] C = new int[2][2];
-        for(int i=0;i<2;i++) {
-            for(int j=2;j<4;j++) {
-                C[i][j-2] = A[i][j];
+    public static int[][] getSecondQuadrant(int[][] A, int array_length) {
+        int quadrant_length = array_length/2;
+        int[][] C = new int[quadrant_length][quadrant_length];
+        for(int i=0;i<quadrant_length;i++) {
+            for(int j=quadrant_length;j<array_length;j++) {
+                C[i][j-quadrant_length] = A[i][j];
             }
         }
 
         return C;
     }
 
-
-    public static int[][] getThirdQuadrant(int[][] A) {
-
-        int[][] C = new int[2][2];
-        for(int i=2;i<4;i++) {
-            for(int j=0;j<2;j++) {
-
-                C[i-2][j] = A[i][j];
+    public static int[][] getThirdQuadrant(int[][] A, int array_length) {
+        int quadrant_length = array_length/2;
+        int[][] C = new int[quadrant_length][quadrant_length];
+        for(int i=quadrant_length;i<array_length;i++) {
+            for(int j=0;j<quadrant_length;j++) {
+                C[i-quadrant_length][j] = A[i][j];
             }
         }
 
         return C;
     }
 
+    public static int[][] getFourthQuadrant(int[][] A, int array_length) {
+        int quadrant_length = array_length/2;
+        int[][] C = new int[quadrant_length][quadrant_length];
+        for(int i=quadrant_length;i<array_length;i++) {
+            for(int j=quadrant_length;j<array_length;j++) {
 
-    public static int[][] getFourthQuadrant(int[][] A) {
-
-        int[][] C = new int[2][2];
-        for(int i=2;i<4;i++) {
-            for(int j=2;j<4;j++) {
-
-                C[i-2][j-2] = A[i][j];
+                C[i-quadrant_length][j-quadrant_length] = A[i][j];
             }
         }
 
         return C;
     }
-
 
     public static void main(String[] args) {
-
-
 
         int A[][] = {{1,2,3,2},
                 {4,2,6,5},
@@ -165,16 +145,15 @@ public class StrassenMatrixMultiplication {
                 {5,6,6,5},
                 {3,3,2,1}};
 
-        int C[][] = multiplyMatrix(A,B,4);
+        int C[][] = multiplyMatrix(A,B,A.length);
 
-        for (int i=0;i<4;i++) {
-            for (int j=0;j<4;j++) {
+        for (int i=0;i< A.length;i++) {
+            for (int j=0;j<A.length;j++) {
 
                 System.out.print(C[i][j] + " ");
             }
             System.out.println();
         }
-
 
     }
 
