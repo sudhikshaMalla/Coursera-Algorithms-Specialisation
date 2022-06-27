@@ -27,7 +27,7 @@ public class RandomisedSelection {
     }
 
     public static int select(int[] array, int low, int high, int index) {
-        if(low<high) {
+        if(low<=high) {
             int piv_pos = partition(array, low, high);
             if(piv_pos == index) {
                 return array[piv_pos];
@@ -66,7 +66,7 @@ public class RandomisedSelection {
 
         System.out.println();
 
-        int ind = 3;
+        int ind = 6;
 
         System.out.println("Element at index " + ind + " is : ");
 
