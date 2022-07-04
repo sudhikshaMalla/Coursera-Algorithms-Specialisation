@@ -64,14 +64,14 @@ class BST {
     }
 
     public void printTree() {
-        inorder(root);
+        inOrder(root);
     }
 
-    private void inorder(Node root) {
+    private void inOrder(Node root) {
         if(root!=null) {
-            inorder(root.left);
+            inOrder(root.left);
             System.out.print(root.val + " ");
-            inorder(root.right);
+            inOrder(root.right);
         }
     }
 
