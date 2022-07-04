@@ -48,15 +48,20 @@ public class DeterministicSelection {
         int ind = 0;
 
         for(int i=low; i<=high; i+=5) {
-            int[] groupOfFive = new int[5];
             if(i+4 <= high) {
-                for (int j = 0; j < 5; j++) {
-                    groupOfFive[j] = i + j;
-                }
+                int[] groupOfFive = groupArray(i, 5);
                 medians[ind++] = sortAndFindMedianIndex(array, groupOfFive);
             }
         }
         return sortAndFindMedianIndex(array, medians);
+    }
+
+    private static int[] groupArray(int i, int groupLength) {
+        int[] groupOfFive = new int[groupLength];
+        for (int j = 0; j < groupLength; j++) {
+            groupOfFive[j] = i + j;
+        }
+        return groupOfFive;
     }
 
     public static int sortAndFindMedianIndex(int[] array, int[] indices) {
@@ -67,15 +72,19 @@ public class DeterministicSelection {
         }
 
         for(int i=0; i<values.length; i++) {
-            for(int j=0; j<values.length-i-1; j++) {
-                if(values[j] > values[j+1]) {
-                    swapElements(values, j , j+1);
-                    swapElements(indices, j, j+1);
-                }
-            }
+            bubble(indices, values, i);
         }
 
         return indices[values.length/2];
+    }
+
+    private static void bubble(int[] indices, int[] values, int i) {
+        for(int j = 0; j< values.length- i -1; j++) {
+            if(values[j] > values[j+1]) {
+                swapElements(values, j , j+1);
+                swapElements(indices, j, j+1);
+            }
+        }
     }
 
     public static void swapElements(int[] array, int i, int j) {
