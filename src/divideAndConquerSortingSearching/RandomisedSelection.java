@@ -4,8 +4,6 @@ import java.util.Random;
 
 public class RandomisedSelection {
     public static int partition(int[] array, int low, int high) {
-
-
         int pivot = selectPivot(low, high);
         swapElements(array, high, pivot);
 
@@ -28,14 +26,14 @@ public class RandomisedSelection {
 
     public static int select(int[] array, int low, int high, int index) {
         if(low<=high) {
-            int piv_pos = partition(array, low, high);
-            if(piv_pos == index) {
-                return array[piv_pos];
+            int pivotPosition = partition(array, low, high);
+            if(pivotPosition == index) {
+                return array[pivotPosition];
             }
-            else if(index < piv_pos) {
-                return select(array, low, piv_pos - 1, index);
+            else if(index < pivotPosition) {
+                return select(array, low, pivotPosition - 1, index);
             }
-            return select(array,piv_pos+1,high, index);
+            return select(array,pivotPosition+1,high, index);
         }
         return -1;
     }
@@ -43,8 +41,8 @@ public class RandomisedSelection {
     public static int selectPivot(int start, int end) {
         Random rand = new Random();
         int diff = end - start + 1;
-        int random_number = rand.nextInt(diff);
-        return random_number + start;
+        int randomNumber = rand.nextInt(diff);
+        return randomNumber + start;
     }
 
     public static void swapElements(int[] array, int i, int j) {
