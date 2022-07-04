@@ -24,26 +24,26 @@ public class RandomContraction {
         }
     }
 
-    public static class subset
+    public static class Subset
     {
         int parent;
         int rank;
-        subset(int parent, int rank){
+        Subset(int parent, int rank){
             this.parent = parent;
             this.rank = rank;
         }
     }
 
-    public static int kargerMinCut(Graph graph)
+    public static int getMinCuts(Graph graph)
     {
         int V = graph.vertices, E = graph.edges;
         Edge edge[] = graph.edge;
 
-        subset subsets[] = new subset[V];
+        Subset subsets[] = new Subset[V];
 
         for (int v = 0; v < V; ++v)
         {
-            subsets[v] = new subset(v,0);
+            subsets[v] = new Subset(v,0);
         }
 
         int vertices = V;
@@ -62,23 +62,23 @@ public class RandomContraction {
             else
             {
                 vertices--;
-                Union(subsets, subset1, subset2);
+                union(subsets, subset1, subset2);
             }
         }
 
-        int cutedges = 0;
+        int cutEdges = 0;
         for (int i=0; i<E; i++)
         {
             int subset1 = find(subsets, edge[i].src);
             int subset2 = find(subsets, edge[i].dest);
             if (subset1 != subset2){
-                cutedges++;
+                cutEdges++;
             }
         }
-        return cutedges;
+        return cutEdges;
     }
 
-    public static int find(subset subsets[], int i)
+    public static int find(Subset subsets[], int i)
     {
         if (subsets[i].parent != i){
             subsets[i].parent = find(subsets, subsets[i].parent);
@@ -86,7 +86,7 @@ public class RandomContraction {
         return subsets[i].parent;
     }
 
-    public static void Union(subset subsets[], int x, int y)
+    public static void union(Subset subsets[], int x, int y)
     {
         int xroot = find(subsets, x);
         int yroot = find(subsets, y);
@@ -108,10 +108,10 @@ public class RandomContraction {
 
     public static void main (String[] args) {
 
-        int V = 4;
-        int E = 5;
+        int vertices = 4;
+        int edges = 5;
 
-        Graph graph = new Graph(V, E);
+        Graph graph = new Graph(vertices, edges);
 
         graph.edge[0] = new Edge(0,1);
 
@@ -123,7 +123,7 @@ public class RandomContraction {
 
         graph.edge[4] = new Edge(2,3);
 
-        System.out.println("No.of Cuts : "+kargerMinCut(graph));
+        System.out.println("No.of Cuts : "+ getMinCuts(graph));
     }
 
 }
