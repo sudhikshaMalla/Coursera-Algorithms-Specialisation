@@ -2,6 +2,8 @@ package src.divideAndConquerSortingSearching;
 
 public class RedBlackTree {
 
+    public static final char BLACK = 'B';
+    public static final char RED = 'R';
     private static Node tree = null;
     private static boolean leftLeftRotation = false;
     private static boolean rightRightRotation = false;
@@ -10,16 +12,16 @@ public class RedBlackTree {
 
     public static void insert(int data)
     {
-        if(tree ==null)
+        if(tree == null)
         {
             tree = new Node(data);
-            tree.colour = 'B';
+            tree.colour = BLACK;
         }
         else
-            tree = insertHelp(tree,data);
+            tree = insertNonRoot(tree,data);
     }
 
-    private static Node insertHelp(Node root, int data)
+    private static Node insertNonRoot(Node root, int data)
     {
         boolean redRedConflict = false;
 
@@ -27,21 +29,21 @@ public class RedBlackTree {
             return(new Node(data));
         else if(data<root.data)
         {
-            root.left = insertHelp(root.left, data);
+            root.left = insertNonRoot(root.left, data);
             root.left.parent = root;
             if(root!=tree)
             {
-                if(root.colour=='R' && root.left.colour=='R')
+                if(root.colour== RED && root.left.colour== RED)
                     redRedConflict = true;
             }
         }
         else
         {
-            root.right = insertHelp(root.right,data);
+            root.right = insertNonRoot(root.right,data);
             root.right.parent = root;
             if(root!=tree)
             {
-                if(root.colour=='R' && root.right.colour=='R')
+                if(root.colour== RED && root.right.colour== RED)
                     redRedConflict = true;
             }
         }
@@ -49,41 +51,41 @@ public class RedBlackTree {
         root = rotateNode(root);
 
         if(redRedConflict)
-            handleRedRedConflict(root);
+            handleConflict(root);
 
         return root;
     }
 
-    private static void handleRedRedConflict(Node root) {
+    private static void handleConflict(Node root) {
         if(root.parent.right == root)
         {
-            if(root.parent.left==null || root.parent.left.colour=='B')
+            if(root.parent.left==null || root.parent.left.colour== BLACK)
             {
-                if(root.left!=null && root.left.colour=='R')
+                if(root.left!=null && root.left.colour== RED)
                     rightLeftRotation = true;
-                else if(root.right!=null && root.right.colour=='R')
+                else if(root.right!=null && root.right.colour== RED)
                     leftLeftRotation = true;
             }
             else
             {
-                root.parent.left.colour = 'B';
-                root.colour = 'B';
+                root.parent.left.colour = BLACK;
+                root.colour = BLACK;
                 colorParentRed(root);
             }
         }
         else
         {
-            if(root.parent.right==null || root.parent.right.colour=='B')
+            if(root.parent.right==null || root.parent.right.colour== BLACK)
             {
-                if(root.left!=null && root.left.colour=='R')
+                if(root.left!=null && root.left.colour== RED)
                     rightRightRotation = true;
-                else if(root.right!=null && root.right.colour=='R')
+                else if(root.right!=null && root.right.colour== RED)
                     leftRightRotation = true;
             }
             else
             {
-                root.parent.right.colour = 'B';
-                root.colour = 'B';
+                root.parent.right.colour = BLACK;
+                root.colour = BLACK;
                 colorParentRed(root);
             }
         }
@@ -91,22 +93,22 @@ public class RedBlackTree {
 
     private static void colorParentRed(Node root) {
         if(root.parent!=tree)
-            root.parent.colour = 'R';
+            root.parent.colour = RED;
     }
 
     private static Node rotateNode(Node root) {
         if(leftLeftRotation)
         {
             root = rotateLeft(root);
-            root.colour = 'B';
-            root.left.colour = 'R';
+            root.colour = BLACK;
+            root.left.colour = RED;
             leftLeftRotation = false;
         }
         else if(rightRightRotation)
         {
             root = rotateRight(root);
-            root.colour = 'B';
-            root.right.colour = 'R';
+            root.colour = BLACK;
+            root.right.colour = RED;
             rightRightRotation = false;
         }
         else if(rightLeftRotation)
@@ -114,8 +116,8 @@ public class RedBlackTree {
             root.right = rotateRight(root.right);
             root.right.parent = root;
             root = rotateLeft(root);
-            root.colour = 'B';
-            root.left.colour = 'R';
+            root.colour = BLACK;
+            root.left.colour = RED;
 
             rightLeftRotation = false;
         }
@@ -124,8 +126,8 @@ public class RedBlackTree {
             root.left = rotateLeft(root.left);
             root.left.parent = root;
             root = rotateRight(root);
-            root.colour = 'B';
-            root.right.colour = 'R';
+            root.colour = BLACK;
+            root.right.colour = RED;
             leftRightRotation = false;
         }
         return root;
