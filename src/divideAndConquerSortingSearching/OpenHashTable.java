@@ -1,8 +1,6 @@
 package src.divideAndConquerSortingSearching;
 
-import java.util.LinkedList;
-
-public class HashTableUsingOpenAddressing {
+public class OpenHashTable {
     public static void main(String[] args) {
         HashTable hashTable = new HashTable(10);
 
