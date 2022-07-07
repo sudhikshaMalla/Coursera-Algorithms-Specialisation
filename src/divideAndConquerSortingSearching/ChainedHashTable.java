@@ -2,7 +2,7 @@ package src.divideAndConquerSortingSearching;
 
 import java.util.LinkedList;
 
-public class HashTableUsingChaining {
+public class ChainedHashTable {
     public static void main(String[] args) {
         HashTable hashTable = new HashTable(10);
 
